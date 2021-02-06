@@ -1,0 +1,18 @@
+{
+ :paths ["src/main/java" "src/main/clojure" "src/main/resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.10.2"}}
+ :aliases {
+           :test {:extra-paths ["src/test/java" "src/test/clojure" "src/test/resources"]}
+           :middleware/nrepl {:extra-deps {nrepl/nrepl {:mvn/version "0.8.3"}}
+                              :main-opts ["-m" "nrepl.cmdline" "-i"]}
+           :middleware/cider-clj {:extra-deps {nrepl/nrepl {:mvn/version "0.8.3"}
+                                               cider/cider-nrepl {:mvn/version "0.25.7"}}
+                                  :main-opts ["-m" "nrepl.cmdline" "-i" "--middleware" "[cider.nrepl/cider-middleware]"]}
+           }
+ :mvn/repos {
+             "tsinghua-clojars" {:name "tsinghua-clojars"
+                                 :url "https://mirrors.tuna.tsinghua.edu.cn/clojars"}
+             "aliyun-public" {:name "aliyun-public"
+                              :url "https://maven.aliyun.com/repository/public"}
+             }
+ }

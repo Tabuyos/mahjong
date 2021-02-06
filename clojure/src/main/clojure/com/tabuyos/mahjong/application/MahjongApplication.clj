@@ -1,0 +1,17 @@
+(ns com.tabuyos.mahjong.application.MahjongApplication)
+(require '[com.tabuyos.mahjong.util.Constant :as constant])
+(use '[com.tabuyos.mahjong.util.Moon :only [moon moon1]])
+(use '[com.tabuyos.mahjong.util.Container :only [get-instance]])
+(import [java.util Calendar])
+
+(defn -main [& args]
+  (println args)
+  (constant/say "tabuyos")
+  (moon)
+  (get-instance)
+  (moon1)
+  (println (Calendar/getInstance))
+  (println (.toUpperCase "tabuyos"))
+  (println (. "tabuyos" indexOf "u"))
+  (prn "this is prn method, now you saw the message with double quote.")
+  (println "hello, tabuyos."))
