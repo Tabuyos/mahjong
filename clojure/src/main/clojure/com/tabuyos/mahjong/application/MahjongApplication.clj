@@ -4,9 +4,9 @@
 (use '[com.tabuyos.mahjong.util.Container :only [get-instance]])
 (import [java.util Calendar])
 
-(defn -main [& args]
+(defn -main-old [& args]
   (println args)
-  (constant/say "tabuyos")
+  (println (:1 constant/dot))
   (moon)
   (get-instance)
   (moon1)
@@ -15,3 +15,12 @@
   (println (. "tabuyos" indexOf "u"))
   (prn "this is prn method, now you saw the message with double quote.")
   (println "hello, tabuyos."))
+
+(defn -main [& args]
+  (println (get (:1 constant/dot) 2))
+  (println (subvec (:4 constant/bam) 1))
+  (println (subvec (:6 constant/cha) 3))
+  (println constant/pool)
+  (println (dissoc constant/pool :dot))
+  (println (constant/get-lack))
+  )
