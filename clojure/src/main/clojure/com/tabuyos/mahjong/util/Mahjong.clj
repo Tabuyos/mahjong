@@ -56,26 +56,26 @@
 ;; 因此我们抽牌时只能在抽手牌中的某一张
 ;; 0: 顺 1: 碰
 
-(defn go-left-with-one
+(defn go-left-with-nine
   "go to left."
   [wl, ik]
   (def wall wl)
   (let [first ik, ck1 (keyword (str first)), cv1 (ck1 wl)]
     (if (< (count cv1) 1)
-      (go-left-with-one wl (+ first 1))
-      (let [second (+ first 1), ck2 (keyword (str second)), cv2 (ck2 wl)]
+      (go-left-with-nine wl (- first 1))
+      (let [second (- first 1), ck2 (keyword (str second)), cv2 (ck2 wl)]
         (if (< (count cv2) 1)
-          (go-left-with-one wl (+ second 1))
-          (let [third (+ second 1), ck3 (keyword (str third)), cv3 (ck3 wl)]
+          (go-left-with-nine wl (- second 1))
+          (let [third (- second 1), ck3 (keyword (str third)), cv3 (ck3 wl)]
             (if (< (count cv3) 1)
-              (go-left-with-one wl (+ third 1))
+              (go-left-with-nine wl (- third 1))
               (do
                 (def current (conj current first))
                 (def current (conj current second))
                 (def current (conj current third))
                 (def wall (assoc wall ck1 (subvec cv1 1)))
-                (def wall (assoc wall ck2 (subvec cv2 2)))
-                (def wall (assoc wall ck3 (subvec cv3 3)))
+                (def wall (assoc wall ck2 (subvec cv2 1)))
+                (def wall (assoc wall ck3 (subvec cv3 1)))
                 ))
             ))
         )
@@ -83,26 +83,26 @@
     )
   )
 
-(defn go-right-with-nine
+(defn go-right-with-one
   "go to right."
   [wl, ik]
   (def wall wl)
   (let [first ik, ck1 (keyword (str first)), cv1 (ck1 wl)]
     (if (< (count cv1) 1)
-      (go-right-with-nine wl (- first 1))
-      (let [second (- first 1), ck2 (keyword (str second)), cv2 (ck2 wl)]
+      (go-right-with-one wl (+ first 1))
+      (let [second (+ first 1), ck2 (keyword (str second)), cv2 (ck2 wl)]
         (if (< (count cv2) 1)
-          (go-right-with-nine wl (- second 1))
-          (let [third (- second 1), ck3 (keyword (str third)), cv3 (ck3 wl)]
+          (go-right-with-one wl (+ second 1))
+          (let [third (+ second 1), ck3 (keyword (str third)), cv3 (ck3 wl)]
             (if (< (count cv3) 1)
-              (go-right-with-nine wl (- third 1))
+              (go-right-with-one wl (+ third 1))
               (do
                 (def current (conj current first))
                 (def current (conj current second))
                 (def current (conj current third))
                 (def wall (assoc wall ck1 (subvec cv1 1)))
-                (def wall (assoc wall ck2 (subvec cv2 2)))
-                (def wall (assoc wall ck3 (subvec cv3 3)))
+                (def wall (assoc wall ck2 (subvec cv2 1)))
+                (def wall (assoc wall ck3 (subvec cv3 1)))
                 ))
             ))
         )
@@ -114,24 +114,27 @@
   "go to center."
   [wl, ik]
   (def wall wl)
-  (let [first ik, ck1 (keyword (str first)), cv1 (ck1 wl)]
-    (if (< (count cv1) 1)
-      (go-center wl (- first 1))
-      (let [second (- first 1), ck2 (keyword (str second)), cv2 (ck2 wl)]
-        (if (< (count cv2) 1)
-          (go-center wl (- second 1))
-          (let [third (- second 1), ck3 (keyword (str third)), cv3 (ck3 wl)]
-            (if (< (count cv3) 1)
-              (go-center wl (- third 1))
-              (do
-                (def current (conj current first))
-                (def current (conj current second))
-                (def current (conj current third))
-                (def wall (assoc wall ck1 (subvec cv1 1)))
-                (def wall (assoc wall ck2 (subvec cv2 2)))
-                (def wall (assoc wall ck3 (subvec cv3 3)))
-                ))
-            ))
+  (if (< ik 2)
+    (go-left-with-nine wl 9)
+    (let [first ik, ck1 (keyword (str first)), cv1 (ck1 wl)]
+      (if (< (count cv1) 1)
+        (go-center wl (- first 2))
+        (let [second (- first 1), ck2 (keyword (str second)), cv2 (ck2 wl)]
+          (if (< (count cv2) 1)
+            (go-center wl (- second 2))
+            (let [third (+ first 1), ck3 (keyword (str third)), cv3 (ck3 wl)]
+              (if (< (count cv3) 1)
+                (go-center wl (- third 2))
+                (do
+                  (def current (conj current second))
+                  (def current (conj current first))
+                  (def current (conj current third))
+                  (def wall (assoc wall ck1 (subvec cv1 1)))
+                  (def wall (assoc wall ck2 (subvec cv2 1)))
+                  (def wall (assoc wall ck3 (subvec cv3 1)))
+                  ))
+              ))
+          )
         )
       )
     )
@@ -169,13 +172,29 @@
         ck (nth (keys wl) index),
         cv (ck wl)]
     (case (get cv 0)
-      1 (go-right-with-nine wl, 1)
-      9 (go-left-with-one wl, 9)
-      (go-center wl, (get cv 0))
+      1 (go-right-with-one wl 1)
+      9 (go-left-with-nine wl 9)
+      (go-center wl (get cv 0))
       )
-    (println (= (get cv 0) 9))
     )
-  (println (keyword (str 3)))
+  )
+
+(defn get-jong
+  "jong in mahjong."
+  [wl]
+  (def wall wl)
+  (let [cl (count wl),
+        index (rnd-int cl),
+        ck (nth (keys wl) index),
+        cv (ck wl)]
+    (if (< (count cv) 2)
+      (get-jong wl)
+      (do
+        (def current (conj current (get cv 0)))
+        (def current (conj current (get cv 0)))
+        (def wall (assoc wall ck (subvec cv 2)))
+        ))
+    )
   )
 
 (defn deal0
@@ -184,11 +203,13 @@
   (def wall pool)
   (dotimes [_ 4]
     (if (< (/ (rnd-int 10) 10) weight)
-      (get-sequence wall)
-      (get-pong wall)
+      (get-sequence pool)
+      (get-pong pool)
       )
     )
-  (println current)
+  (get-jong pool)
+  (println (shuffle current))
+  ;(println current)
   )
 
 (defn deal
