@@ -21,5 +21,5 @@
   ;;(println (subvec (:4 constant/bam) 1))
   ;;(println (subvec (:6 constant/cha) 3))
   ;;(println (mahjong/get-with-lack))
-  (mahjong/deal)
+  (mahjong/random-deal)
   )

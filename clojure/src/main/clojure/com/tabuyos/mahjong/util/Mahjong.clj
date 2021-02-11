@@ -12,7 +12,7 @@
 ;; 花色
 (def stl (keys pool))
 ;; 手牌的权重
-(def weight 1)
+(def weight 0.5)
 
 (def wall {})
 
@@ -208,14 +208,35 @@
       )
     )
   (get-jong pool)
-  (println (shuffle current))
-  ;(println current)
+  ;(println (shuffle current))
+  ;(println (sort current))
+  (println current)
   )
 
-(defn deal
+(defn random-deal
   "deal wall to somebody after shuffle."
   []
   (let [pool (get-wall true)]
     (deal0 pool)
     )
+  )
+
+(defn one-sequence-deal
+  "get one sequence deal."
+  []
+  )
+
+(defn two-sequence-deal
+  "get two sequence deal."
+  []
+  )
+
+(defn three-sequence-deal
+  "get three sequence deal."
+  []
+  )
+
+(defn four-sequence-deal
+  "get four sequence deal."
+  []
   )
