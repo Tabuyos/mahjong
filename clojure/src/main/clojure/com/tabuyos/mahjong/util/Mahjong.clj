@@ -30,8 +30,11 @@
 
 (defn rnd-int
   "random int."
-  [len]
-  (.nextInt rnd len))
+  ([]
+   (rnd-int Integer/MAX_VALUE))
+  ([len]
+   (.nextInt rnd len))
+  )
 
 (defn get-with-lack
   "get lack brand."
@@ -309,7 +312,7 @@
 (defn write-to-file
   "write to file."
   ([filename]
-  (write-to-file filename result))
+   (write-to-file filename result))
   ([filename coll]
    (with-open [wr (clojure.java.io/writer (str filename ".tabuyos") :append false)]
      (dotimes [index (count coll)]
@@ -553,7 +556,7 @@
     )
   )
 
-(defn app
+(defn process
   "application for mahjong."
   []
   ;(zero-sequence-deal)
@@ -570,4 +573,40 @@
 
   (into-all (sort-by :wall (distinct temp)))
   (write-all "all")
+  )
+
+(defn get-input
+  "get input"
+  [msg]
+  (do
+    (print msg)
+    (flush)
+    (read-line)
+    )
+  )
+
+(defn trim
+  "trim string"
+  [string]
+  (.trim (.toString string))
+  )
+
+(defn random-one
+  "random one wall from file"
+  []
+  (if (= (count all) 0)
+    (def all (reduce conj all (distinct (read-from-file "all"))))
+    )
+  (let [in (atom "Y")]
+    (while (not (.equalsIgnoreCase @in "N"))
+      (let [line (nth all (rnd-int (count all))), wl (trim (:wall line)), ry (trim (nth (:ready line) 0))]
+        (println "wall:" wl)
+        (if (not (.equalsIgnoreCase (get-input "show(y/enter)?") "N"))
+          (println "ready:" ry)
+          )
+        )
+      (println)
+      (reset! in (get-input "continue(y/enter)/quit(n)?"))
+      )
+    )
   )

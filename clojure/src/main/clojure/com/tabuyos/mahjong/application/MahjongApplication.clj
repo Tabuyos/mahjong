@@ -17,8 +17,6 @@
   (println "hello, tabuyos."))
 
 (defn -main [& _]
-  ;(dotimes [_ 2000]
-  ;  (mahjong/random-deal)
-  ;  )
-  (mahjong/app)
+  ;(mahjong/process)
+  (mahjong/random-one)
   )
