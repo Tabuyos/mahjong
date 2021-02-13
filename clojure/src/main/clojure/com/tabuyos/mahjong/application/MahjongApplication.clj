@@ -17,9 +17,8 @@
   (println "hello, tabuyos."))
 
 (defn -main [& _]
-  ;;(println (get (:1 constant/dot) 2))
-  ;;(println (subvec (:4 constant/bam) 1))
-  ;;(println (subvec (:6 constant/cha) 3))
-  ;;(println (mahjong/get-with-lack))
-  (mahjong/random-deal)
+  ;(dotimes [_ 2000]
+  ;  (mahjong/random-deal)
+  ;  )
+  (mahjong/app)
   )

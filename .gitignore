@@ -53,6 +53,7 @@ build
 
 # temporary
 temp
+*.tabuyos
 
 # non-ignore
 !.gitignore
